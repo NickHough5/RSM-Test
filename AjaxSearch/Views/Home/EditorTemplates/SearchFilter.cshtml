@@ -1,0 +1,29 @@
+﻿@model AjaxSearch.Models.Home.SearchFilter
+
+<div>
+    @Html.TextBoxFor(m => m.Term)
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+        var searchBox = $('#@Html.IdFor(m => m.Term)');
+        
+        searchBox.keyup(function () {
+
+            $.ajax(
+                {
+                    url: '@Url.Action("Search")',
+                    async: true,
+                    cache: false,
+                    type: 'POST',
+                    data: { Term: searchBox.val() },
+                    success: function(data) { $('#searchResults').html(data); }
+                });
+            console.log("search for: " + searchBox.val());
+
+        });
+
+    });
+
+</script>
