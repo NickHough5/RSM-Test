@@ -8,18 +8,32 @@
 
     $(function() {
         var searchBox = $('#@Html.IdFor(m => m.Term)');
-        
+        var requestChain = [];
         searchBox.keyup(function () {
 
-            $.ajax(
+            requestChain.push(
                 {
                     url: '@Url.Action("Search")',
                     async: true,
                     cache: false,
                     type: 'POST',
                     data: { Term: searchBox.val() },
-                    success: function(data) { $('#searchResults').html(data); }
-                });
+                    success: function (data) {
+                        if (requestChain.length != 0) {
+                            var request = requestChain.pop();
+                            requestChain = [];
+                            $.ajax(request);
+                        }
+                        else{
+                            $('#searchResults').html(data);
+                        }
+                    }
+                }
+            );
+
+            if (requestChain.length == 1) {
+                $.ajax(requestChain[0]);
+            }
             console.log("search for: " + searchBox.val());
 
         });

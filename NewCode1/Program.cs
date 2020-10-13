@@ -26,7 +26,15 @@ namespace NewCode1
             var tree = new Tree<string, Contact>();
             foreach (var contact in TestData.Contacts)
             {
-                tree.AddNode(contact.Name, contact);
+                try
+                {
+                    tree.AddNode(contact.Name, contact);
+                }
+                catch(Exception e)
+                {
+                    // Note this would typically be logged to a file and potentially stop the adding of additional nodes and return an empty tree.
+                    Console.WriteLine(e.Message); 
+                }
             }
 
             return tree;
@@ -34,7 +42,8 @@ namespace NewCode1
 
         static bool IsContactFound(Contact contact)
         {
-            return contact != null;
+            // Added default check as i return default in previous methods (generics check).
+            return contact != null && contact != default;
         }
 
         static void PrintContactNotFound()
