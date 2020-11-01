@@ -30,6 +30,11 @@
                             requestChain = [];
                             allCallsCompleted = true;
                         }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        requestChain = [];
+                        allCallsCompleted = true;
+                        alert("Status: " + textStatus); alert("Error: " + errorThrown); 
                     }
                 }
             );
